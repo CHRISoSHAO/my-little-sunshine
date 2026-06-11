@@ -2278,3 +2278,103 @@ h1 { font-size: clamp(28px, 3vw, 42px); letter-spacing: 0.1em; }
     transition-duration: 0.01ms !important;
   }
 }
+
+/* iOS 26.5 standalone and safe-area adaptation */
+html {
+  min-height: 100%;
+  background-color: #f8f1e2;
+}
+body {
+  min-height: 100svh;
+  padding:
+    env(safe-area-inset-top, 0)
+    env(safe-area-inset-right, 0)
+    env(safe-area-inset-bottom, 0)
+    env(safe-area-inset-left, 0);
+  -webkit-touch-callout: none;
+  overscroll-behavior-y: none;
+}
+input,
+select,
+textarea { font-size: max(16px, 1em); }
+.app-shell {
+  padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+}
+.section-nav {
+  top: calc(8px + env(safe-area-inset-top, 0px));
+}
+.modal,
+.lightbox {
+  padding:
+    max(16px, env(safe-area-inset-top, 0px))
+    max(16px, env(safe-area-inset-right, 0px))
+    max(16px, env(safe-area-inset-bottom, 0px))
+    max(16px, env(safe-area-inset-left, 0px));
+}
+.standalone-app .topbar { margin-top: 4px; }
+.standalone-app .section-nav { top: calc(6px + env(safe-area-inset-top, 0px)); }
+
+.ios-install-tip {
+  position: fixed;
+  z-index: 90;
+  right: max(14px, env(safe-area-inset-right, 0px));
+  bottom: max(14px, env(safe-area-inset-bottom, 0px));
+  left: max(14px, env(safe-area-inset-left, 0px));
+  display: grid;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 13px 42px 13px 13px;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 11px;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  border-radius: 19px;
+  background: rgba(255, 253, 246, 0.91);
+  box-shadow: 0 18px 60px rgba(54, 45, 31, 0.24);
+  backdrop-filter: blur(24px) saturate(1.2);
+  opacity: 0;
+  transform: translateY(22px) scale(0.98);
+  transition: opacity 0.26s ease, transform 0.26s ease;
+}
+.ios-install-tip[hidden] { display: none; }
+.ios-install-tip.is-visible { opacity: 1; transform: translateY(0) scale(1); }
+.ios-install-icon {
+  display: grid;
+  width: 43px;
+  height: 43px;
+  place-items: center;
+  border-radius: 13px;
+  color: #865605;
+  background: linear-gradient(145deg, #f9d772, #eeb135);
+  box-shadow: 0 6px 15px rgba(222, 153, 34, 0.22);
+  font-size: 23px;
+}
+.ios-install-tip b { color: #4f493f; font-size: 12px; }
+.ios-install-tip p { margin-top: 3px; color: #81796e; font-size: 10px; line-height: 1.45; }
+.ios-install-tip button {
+  position: absolute;
+  top: 8px;
+  right: 9px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: #867d70;
+  background: rgba(239, 235, 226, 0.8);
+  font-size: 18px;
+}
+
+@media (max-width: 640px) {
+  body { overscroll-behavior-y: auto; }
+  .app-shell {
+    padding-top: 10px;
+    padding-bottom: calc(34px + env(safe-area-inset-bottom, 0px));
+  }
+  .modal,
+  .lightbox {
+    padding:
+      max(10px, env(safe-area-inset-top, 0px))
+      max(10px, env(safe-area-inset-right, 0px))
+      max(10px, env(safe-area-inset-bottom, 0px))
+      max(10px, env(safe-area-inset-left, 0px));
+  }
+}
