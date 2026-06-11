@@ -212,6 +212,8 @@ const trainingBlocks = document.querySelector("#trainingBlocks");
 const mainWorkoutPicker = document.querySelector("#mainWorkoutPicker");
 const customWorkoutForm = document.querySelector("#customWorkoutForm");
 const scrollProgressBar = document.querySelector("#scrollProgressBar");
+const iosInstallTip = document.querySelector("#iosInstallTip");
+const dismissInstallTip = document.querySelector("#dismissInstallTip");
 let visibleWorkouts = [];
 let selectedWorkout = WORKOUT_LIBRARY[1];
 const activeTrainingBlocks = {};
@@ -2161,6 +2163,34 @@ function updateScrollProgress() {
 window.addEventListener("scroll", updateScrollProgress, { passive: true });
 window.addEventListener("resize", updateScrollProgress);
 updateScrollProgress();
+
+const isStandaloneApp = window.matchMedia("(display-mode: standalone)").matches
+  || window.navigator.standalone === true;
+const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent)
+  || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+document.documentElement.classList.toggle("standalone-app", isStandaloneApp);
+
+if (iosInstallTip && isIOSDevice && !isStandaloneApp
+    && localStorage.getItem("little-sunshine-install-tip-dismissed") !== "true") {
+  window.setTimeout(() => {
+    iosInstallTip.hidden = false;
+    requestAnimationFrame(() => iosInstallTip.classList.add("is-visible"));
+  }, 1200);
+}
+
+dismissInstallTip?.addEventListener("click", () => {
+  iosInstallTip.classList.remove("is-visible");
+  localStorage.setItem("little-sunshine-install-tip-dismissed", "true");
+  window.setTimeout(() => { iosInstallTip.hidden = true; }, 260);
+});
+
+if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(() => {
+      // The app remains fully usable online if offline registration is unavailable.
+    });
+  });
+}
 
 document.querySelector("#addWater").addEventListener("click", () => {
   const wasEditing = editingHealth?.group === "water";
