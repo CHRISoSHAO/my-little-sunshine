@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5bd45">
+  <title>我的小太阳</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="scroll-progress" aria-hidden="true"><span id="scrollProgressBar"></span></div>
+  <div class="ambient-scene" aria-hidden="true">
+    <span class="ambient-sun"></span>
+    <span class="ambient-mountain mountain-far"></span>
+    <span class="ambient-mountain mountain-near"></span>
+    <span class="ambient-mist mist-one"></span>
+    <span class="ambient-mist mist-two"></span>
+  </div>
+  <div class="sun-glow sun-glow-one"></div>
+  <div class="sun-glow sun-glow-two"></div>
+
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="sun-mark" aria-hidden="true">☀</div>
+        <div>
+          <p class="eyebrow">MY LITTLE SUNSHINE</p>
+          <h1>我的小太阳</h1>
+        </div>
+      </div>
+      <div class="hero-message">
+        <p class="top-note">认真收藏，每一个闪闪发光的普通日子。</p>
+        <div class="hero-tags" aria-label="主要功能">
+          <span>生活记录</span>
+          <span>健康复盘</span>
+          <span>力量成长</span>
+          <span>本机私密保存</span>
+        </div>
+      </div>
+    </header>
+
+    <nav class="section-nav" aria-label="页面板块导航">
+      <button class="section-nav-item active" type="button" data-section-target="calendarSection">
+        <span>01</span>日历记录
+      </button>
+      <button class="section-nav-item" type="button" data-section-target="trendSection">
+        <span>02</span>健康复盘
+      </button>
+      <button class="section-nav-item" type="button" data-section-target="patternSection">
+        <span>03</span>关联观察
+      </button>
+      <button class="section-nav-item" type="button" data-section-target="trainingSection">
+        <span>04</span>力量训练
+      </button>
+    </nav>
+
+    <section class="dashboard">
+      <div id="calendarSection" class="calendar-panel card navigable-section">
+        <div class="calendar-header">
+          <div>
+            <p class="eyebrow">SUNSHINE CALENDAR</p>
+            <h2 id="monthTitle">2026年6月</h2>
+          </div>
+          <div class="calendar-actions">
+            <button id="todayBtn" class="text-button" type="button">回到今天</button>
+            <button id="prevMonth" class="icon-button" type="button" aria-label="上个月">‹</button>
+            <button id="nextMonth" class="icon-button" type="button" aria-label="下个月">›</button>
+          </div>
+        </div>
+
+        <div class="weekdays" aria-hidden="true">
+          <span>一</span><span>二</span><span>三</span><span>四</span>
+          <span>五</span><span>六</span><span>日</span>
+        </div>
+        <div id="calendarGrid" class="calendar-grid"></div>
+
+        <div class="calendar-legend">
+          <span><i class="dot thought-dot"></i>人生思考</span>
+          <span><i class="dot proud-dot"></i>我做得不错</span>
+          <span><i class="dot memory-dot"></i>值得纪念</span>
+          <span><i class="dot media-dot"></i>影像声音</span>
+          <span><i class="dot health-dot"></i>健康记录</span>
+          <span><i class="dot plan-dot"></i>日计划</span>
+          <span><i class="dot birthday-dot"></i>生日</span>
+          <span><i class="calendar-status-sample off">休</i>放假</span>
+          <span><i class="calendar-status-sample work">班</i>调休上班</span>
+        </div>
+        <p class="holiday-source">
+          已导入 2026 年放假调休安排 ·
+          <a href="https://www.gov.cn/zhengce/zhengceku/202511/content_7047091.htm" target="_blank" rel="noreferrer">查看国务院通知</a>
+        </p>
+      </div>
+
+      <aside class="entry-panel card">
+        <div class="entry-heading">
+          <div>
+            <p id="selectedWeekday" class="eyebrow">星期三</p>
+            <h2 id="selectedDate">6月10日</h2>
+          </div>
+          <button id="deleteEntry" class="delete-button" type="button" title="清空这一天">清空</button>
+        </div>
+
+        <div class="mood-row">
+          <span>今天感觉</span>
+          <div id="moodPicker" class="mood-picker" role="group" aria-label="选择心情">
+            <button type="button" data-mood="☀️" title="灿烂">☀️</button>
+            <button type="button" data-mood="🙂" title="平静">🙂</button>
+            <button type="button" data-mood="🌱" title="成长">🌱</button>
+            <button type="button" data-mood="🌧️" title="低落">🌧️</button>
+            <button type="button" data-mood="🌙" title="疲惫">🌙</button>
+          </div>
+        </div>
+
+        <form id="entryForm">
+          <div class="entry-mode-switch" role="tablist" aria-label="记录内容类型">
+            <button class="entry-mode-button active" type="button" data-entry-mode="home">首页</button>
+            <button class="entry-mode-button" type="button" data-entry-mode="health">健康记录</button>
+            <button class="entry-mode-button" type="button" data-entry-mode="life">生活记录</button>
+            <button class="entry-mode-button" type="button" data-entry-mode="organizer">计划与生日</button>
+          </div>
+
+          <div class="entry-mode-panel active" data-entry-mode-panel="home">
+            <section id="calendarInfo" class="calendar-info home-calendar-info" aria-label="农历与传统历法信息"></section>
+
+            <section id="weatherCard" class="weather-card home-weather" aria-live="polite">
+              <div class="weather-header">
+                <div class="weather-main">
+                  <span id="weatherIcon" class="weather-icon" aria-hidden="true">☀️</span>
+                  <div>
+                    <div class="weather-location-row">
+                      <b id="weatherCity">上海</b>
+                      <button id="openWeatherSettings" class="weather-city-button" type="button">设置城市</button>
+                    </div>
+                    <p id="weatherSummary">正在获取今日天气……</p>
+                  </div>
+                </div>
+                <div class="weather-actions">
+                  <button id="refreshWeather" class="weather-refresh" type="button" aria-label="刷新天气" title="刷新天气">↻</button>
+                  <a id="chinaWeatherLink" href="https://www.weather.com.cn/weather1d/101020100.shtml" target="_blank" rel="noreferrer">中国天气网</a>
+                </div>
+              </div>
+              <div id="weatherMetrics" class="weather-metrics" aria-label="当前天气指标"></div>
+              <div id="weatherForecast" class="weather-forecast" aria-label="未来三日天气"></div>
+              <div id="weatherLifeIndices" class="weather-life-indices" aria-label="天气生活建议"></div>
+            </section>
+          </div>
+
+          <div class="entry-mode-panel" data-entry-mode-panel="health">
+            <section class="health-entry">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">DAILY HEALTH</p>
+                <h3>今日健康记录</h3>
+              </div>
+              <span class="health-note">用于观察规律，不作医疗诊断</span>
+            </div>
+
+            <div class="health-tabs" role="tablist" aria-label="健康记录类型">
+              <button class="health-tab active" type="button" data-health-tab="glucose">血糖</button>
+              <button class="health-tab" type="button" data-health-tab="meal">餐食</button>
+              <button class="health-tab" type="button" data-health-tab="exercise">运动</button>
+              <button class="health-tab" type="button" data-health-tab="water">喝水</button>
+            </div>
+
+            <div class="health-form active" data-health-panel="glucose">
+              <div class="compact-grid glucose-grid">
+                <label>时间<input id="glucoseTime" type="time"></label>
+                <label>血糖值<input id="glucoseValue" type="number" min="0" max="40" step="0.1" placeholder="mmol/L"></label>
+                <label>测量情景
+                  <select id="glucoseContext">
+                    <option>空腹</option><option>餐前</option>
+                    <option>早餐峰值</option><option>午餐峰值</option><option>晚餐峰值</option>
+                    <option>餐后1小时</option><option>餐后2小时</option>
+                    <option>睡前</option><option>其他</option>
+                  </select>
+                </label>
+              </div>
+              <input id="glucoseNote" class="wide-input" type="text" placeholder="备注，如：早餐后、运动前">
+              <button id="addGlucose" class="mini-add" type="button">＋ 添加血糖</button>
+            </div>
+
+            <div class="health-form" data-health-panel="meal">
+              <div class="compact-grid">
+                <label>时间<input id="mealTime" type="time"></label>
+                <label>餐次
+                  <select id="mealType"><option>早餐</option><option>午餐</option><option>晚餐</option><option>加餐</option></select>
+                </label>
+              </div>
+              <input id="mealFood" class="wide-input" type="text" placeholder="吃了什么，如：米饭、鸡蛋、青菜">
+              <input id="mealNote" class="wide-input" type="text" placeholder="份量或感受，方便复盘食物升糖表现">
+              <button id="addMeal" class="mini-add" type="button">＋ 添加餐食</button>
+            </div>
+
+            <div class="health-form" data-health-panel="exercise">
+              <div class="compact-grid exercise-grid">
+                <label>时间<input id="exerciseTime" type="time"></label>
+                <label>运动<input id="exerciseType" type="text" placeholder="散步"></label>
+                <label>分钟<input id="exerciseDuration" type="number" min="1" max="600" step="1" placeholder="30"></label>
+              </div>
+              <input id="exerciseNote" class="wide-input" type="text" placeholder="强度、步数或身体感受">
+              <button id="addExercise" class="mini-add" type="button">＋ 添加运动</button>
+            </div>
+
+            <div class="health-form" data-health-panel="water">
+              <div class="compact-grid">
+                <label>时间<input id="waterTime" type="time"></label>
+                <label>饮水量<input id="waterAmount" type="number" min="10" max="3000" step="10" value="250"></label>
+              </div>
+              <input id="waterNote" class="wide-input" type="text" placeholder="备注，如：运动后、服药时">
+              <button id="addWater" class="mini-add" type="button">＋ 记录喝水</button>
+            </div>
+
+              <div id="todayHealthList" class="today-health-list"></div>
+            </section>
+          </div>
+
+          <div class="entry-mode-panel" data-entry-mode-panel="life">
+            <label class="field thought-field">
+              <span><b>01</b> 人生思考</span>
+              <textarea id="thought" rows="2" placeholder="今天我明白了……"></textarea>
+            </label>
+
+            <label class="field proud-field">
+              <span><b>02</b> 我做得不错</span>
+              <textarea id="proud" rows="2" placeholder="今天值得夸夸自己的是……"></textarea>
+            </label>
+
+            <label class="field memory-field">
+              <span><b>03</b> 值得纪念</span>
+              <textarea id="memory" rows="2" placeholder="今天想记住的是……"></textarea>
+            </label>
+
+            <section class="media-section">
+              <div class="media-title">
+                <span><b>04</b> 今日收藏</span>
+                <small>照片 · 音乐 · 视频</small>
+              </div>
+              <label class="upload-zone" for="mediaInput">
+                <span class="upload-icon">＋</span>
+                <span>添加今天的照片、音乐或视频</span>
+                <small>媒体仅保存在这个浏览器中</small>
+              </label>
+              <input id="mediaInput" type="file" accept="image/*,audio/*,video/*" multiple hidden>
+              <div id="mediaPreview" class="media-preview"></div>
+            </section>
+          </div>
+
+          <div class="entry-mode-panel" data-entry-mode-panel="organizer">
+            <section class="organizer-panel">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">DAY ORGANIZER</p>
+                  <h3>日计划与生日备忘</h3>
+                </div>
+                <span id="organizerDate" class="health-note"></span>
+              </div>
+
+              <label class="organizer-field">
+                <span>这一天的计划</span>
+                <textarea id="dayPlan" rows="5" placeholder="例如：上午复诊；午饭后散步20分钟；晚上准备明天的物品"></textarea>
+              </label>
+              <label class="organizer-field">
+                <span>计划重点</span>
+                <select id="dayPlanPriority">
+                  <option value="normal">从容安排</option>
+                  <option value="important">重要事项</option>
+                  <option value="gentle">轻松一点</option>
+                </select>
+              </label>
+              <div class="organizer-divider"></div>
+              <label class="organizer-field">
+                <span>生日姓名</span>
+                <input id="birthdayName" type="text" placeholder="填写姓名，之后每年这一天都会提示">
+              </label>
+              <label class="organizer-field">
+                <span>生日备注</span>
+                <input id="birthdayNote" type="text" placeholder="例如：喜欢向日葵，提前一周准备礼物">
+              </label>
+              <p class="organizer-tip">生日按公历月日每年重复显示；清空当天不会删除生日备忘。</p>
+              <button id="saveOrganizer" class="save-button organizer-save" type="button">保存计划与生日</button>
+            </section>
+
+          </div>
+
+          <div class="form-footer">
+            <span id="saveStatus">写下的内容会自动保存在本机</span>
+            <button class="save-button" type="submit">保存今天</button>
+          </div>
+        </form>
+      </aside>
+
+      <section class="health-dashboard">
+        <section id="trendSection" class="review-card trend-review navigable-section">
+          <div class="health-dashboard-header">
+            <div>
+              <p class="eyebrow">HEALTH REVIEW</p>
+              <h2>血糖趋势与生活复盘</h2>
+            </div>
+            <div class="range-switch" role="group" aria-label="趋势时间范围">
+              <button type="button" data-range="7">7天</button>
+              <button class="active" type="button" data-range="14">14天</button>
+              <button type="button" data-range="30">30天</button>
+            </div>
+          </div>
+
+          <div class="health-overview">
+            <div class="trend-panel">
+              <div id="trendSummary" class="trend-summary"></div>
+              <div class="integrated-chart-toolbar">
+                <div>
+                  <p class="eyebrow">DAILY RHYTHM</p>
+                  <p id="timelineDateSummary">一天的餐食、运动与血糖变化。</p>
+                </div>
+                <div class="timeline-day-actions">
+                  <button id="previousTimelineDay" type="button" aria-label="查看前一天">‹</button>
+                  <button id="timelineToday" type="button">今天</button>
+                  <button id="nextTimelineDay" type="button" aria-label="查看后一天">›</button>
+                </div>
+              </div>
+              <div class="chart-wrap">
+                <svg id="glucoseChart" class="glucose-chart" viewBox="0 0 900 350" role="img" aria-label="血糖与生活事件日内叠加图"></svg>
+                <div id="chartEmpty" class="chart-empty">记录血糖后，这里会出现趋势曲线</div>
+              </div>
+              <div class="chart-legend">
+                <div id="chartDateLegend" class="chart-date-legend"></div>
+                <span>共用 00:00–24:00 横轴 · 点击节点查看详情</span>
+              </div>
+              <div id="healthTimeline" class="health-timeline"></div>
+            </div>
+
+            <aside class="reminder-panel">
+              <div class="reminder-title">
+                <div>
+                  <p class="eyebrow">GENTLE REMINDERS</p>
+                  <h3>日常提醒</h3>
+                </div>
+                <button id="enableNotifications" class="text-button" type="button">开启通知</button>
+              </div>
+              <label class="reminder-row"><span>早餐</span><input id="breakfastReminder" type="time" value="08:00"></label>
+              <label class="reminder-row"><span>午餐</span><input id="lunchReminder" type="time" value="12:00"></label>
+              <label class="reminder-row"><span>晚餐</span><input id="dinnerReminder" type="time" value="18:00"></label>
+              <label class="reminder-row"><span>运动</span><input id="exerciseReminder" type="time" value="19:30"></label>
+              <label class="reminder-row">
+                <span>喝水间隔</span>
+                <select id="waterReminder">
+                  <option value="0">关闭</option><option value="60">每1小时</option>
+                  <option value="90" selected>每1.5小时</option><option value="120">每2小时</option>
+                </select>
+              </label>
+              <p id="reminderStatus" class="reminder-status">提醒仅在网页打开时运行。</p>
+            </aside>
+          </div>
+
+        </section>
+
+        <section id="patternSection" class="pattern-section review-card navigable-section">
+          <div class="review-heading">
+            <div>
+              <p class="eyebrow">PATTERN NOTES</p>
+              <h3>餐食与运动关联观察</h3>
+            </div>
+            <p>显示时间上相邻的变化，仅用于个人复盘，不代表因果或医疗结论。</p>
+          </div>
+          <div id="patternSummary" class="pattern-summary"></div>
+          <div class="pattern-columns">
+            <section class="pattern-panel">
+              <h4>餐食后的变化</h4>
+              <p class="pattern-rule">餐前2小时内最近值 → 餐后1–3小时内首次值</p>
+              <div id="mealPatterns" class="pattern-list"></div>
+            </section>
+            <section class="pattern-panel">
+              <h4>运动后的变化</h4>
+              <p class="pattern-rule">运动前2小时内最近值 → 运动结束后3小时内首次值</p>
+              <div id="exercisePatterns" class="pattern-list"></div>
+            </section>
+          </div>
+        </section>
+
+        <section id="trainingSection" class="training-guide review-card navigable-section">
+          <div class="training-guide-header">
+            <div>
+              <p class="eyebrow">GLUCOSE-FRIENDLY STRENGTH</p>
+              <h2>血糖友好力量训练</h2>
+              <p class="guide-intro">偏向抗阻与无氧训练，从可控动作和稳定记录开始。</p>
+            </div>
+            <div class="weekly-target">
+              <span>建议频率</span>
+              <b>每周 2–3 次</b>
+              <small>同一肌群之间留出恢复时间</small>
+            </div>
+          </div>
+
+          <div class="safety-banner">
+            <b>开始前先确认</b>
+            <span>若久未运动，或有心血管、肾脏、视网膜、足部神经损伤等并发症，请先向医生确认适合的动作和强度。</span>
+          </div>
+
+          <div class="training-prescription" aria-label="基础训练处方">
+            <div><span>频率</span><b>每周 2–3 次</b></div>
+            <div><span>动作质量</span><b>保留 2–3 次余力</b></div>
+            <div><span>基础训练量</span><b>每动作 1–3 组</b></div>
+            <div><span>组间休息</span><b>约 60–120 秒</b></div>
+          </div>
+
+          <div class="session-builder-heading">
+            <div>
+              <p class="eyebrow">STRUCTURED SESSION</p>
+              <h3>今日完整训练</h3>
+              <p>按 01–04 顺序完成；主训练来自下方选择，其他阶段可独立更换。</p>
+            </div>
+            <div class="session-builder-actions">
+              <button id="toggleMainWorkoutPicker" class="workout-action-button" type="button" aria-expanded="false" aria-controls="mainWorkoutPicker">选择主训练</button>
+              <button id="refreshAllTrainingBlocks" class="workout-action-button" type="button">↻ 换一套今日方案</button>
+              <button id="recordFullWorkout" class="workout-action-button primary" type="button">记录整套训练</button>
+            </div>
+          </div>
+          <div id="trainingBlocks" class="training-blocks"></div>
+
+          <aside class="training-safety">
+            <h3>血糖记录流程</h3>
+            <div class="safety-step"><b>训练前</b><span>记录血糖、最近进食、用药和身体状态；随身准备快速碳水。</span></div>
+            <div class="safety-step"><b>训练中</b><span>首次尝试或训练较久时留意趋势；出现低血糖症状立即停止并处理。</span></div>
+            <div class="safety-step"><b>训练后</b><span>立即及稍后复测。抗阻训练可能短暂升高血糖，也可能在之后增强胰岛素敏感性。</span></div>
+            <div class="safety-step caution"><b>需要谨慎</b><span>若血糖偏高且酮体阳性，应避免高强度运动；反复低血糖或异常升高需联系医生调整方案。</span></div>
+            <p class="medicine-note">使用胰岛素或磺脲类药物者，运动相关低血糖风险更高。药物和碳水调整应由医疗团队个体化指导。</p>
+          </aside>
+
+          <div class="source-strip">
+            <span>依据与延伸阅读</span>
+            <a href="https://diabetes.org/health-wellness/fitness/anaerobic-exercise-diabetes" target="_blank" rel="noreferrer">ADA 无氧训练</a>
+            <a href="https://diabetes.org/health-wellness/fitness/getting-started-safely" target="_blank" rel="noreferrer">ADA 安全开始</a>
+            <a href="https://www.cdc.gov/diabetes/living-with/physical-activity.html" target="_blank" rel="noreferrer">CDC 身体活动</a>
+            <a href="https://acsm.org/education-resources/trending-topics-resources/physical-activity-guidelines/" target="_blank" rel="noreferrer">ACSM 指南</a>
+            <a href="https://www.niddk.nih.gov/health-information/diabetes/overview/healthy-living-with-diabetes" target="_blank" rel="noreferrer">NIDDK 糖尿病健康生活</a>
+          </div>
+        </section>
+      </section>
+    </section>
+  </main>
+
+  <template id="mediaTemplate">
+    <article class="media-card">
+      <button class="media-content" type="button" aria-label="查看媒体"></button>
+      <div class="media-meta">
+        <span class="media-name"></span>
+        <button class="remove-media" type="button" aria-label="删除附件">×</button>
+      </div>
+    </article>
+  </template>
+
+  <div id="mainWorkoutPicker" class="modal workout-picker-modal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-workout-picker></div>
+    <article class="main-workout-picker-sheet" role="dialog" aria-modal="true" aria-labelledby="mainWorkoutPickerTitle" aria-describedby="mainWorkoutPickerDescription">
+      <button class="modal-close" type="button" data-close-workout-picker aria-label="关闭主训练选择">×</button>
+      <div class="workout-toolbar">
+        <div>
+          <p class="eyebrow">MAIN WORKOUT</p>
+          <h2 id="mainWorkoutPickerTitle">选择主训练</h2>
+          <p id="mainWorkoutPickerDescription">选择后会自动替换今日训练的第 02 阶段，并保留热身、辅助和放松。</p>
+        </div>
+        <div class="workout-toolbar-actions">
+          <button id="refreshWorkouts" class="workout-action-button" type="button">↻ 换一批选择</button>
+          <button id="toggleCustomWorkout" class="workout-action-button primary" type="button">＋ 自定义训练</button>
+        </div>
+      </div>
+
+      <form id="customWorkoutForm" class="custom-workout-form" hidden>
+        <div class="custom-workout-heading">
+          <div>
+            <p class="eyebrow">MY WORKOUT</p>
+            <h3>建立自己的训练方案</h3>
+          </div>
+          <button id="closeCustomWorkout" class="text-button" type="button">收起</button>
+        </div>
+        <div class="custom-workout-grid">
+          <label>方案名称<input id="customWorkoutName" type="text" placeholder="例如：我的居家力量训练"></label>
+          <label>预计时长<input id="customWorkoutDuration" type="text" placeholder="例如：30分钟"></label>
+        </div>
+        <label class="custom-workout-field">
+          <span>训练动作</span>
+          <textarea id="customWorkoutExercises" rows="4" placeholder="每行一个动作，例如：&#10;高脚杯深蹲｜3组 × 10次&#10;弹力带划船｜3组 × 12次"></textarea>
+        </label>
+        <label class="custom-workout-field">
+          <span>训练备注</span>
+          <input id="customWorkoutNote" type="text" placeholder="重量、强度、组间休息或身体注意事项">
+        </label>
+        <button class="save-button custom-workout-save" type="submit">保存自定义方案</button>
+      </form>
+      <div id="workoutPlans" class="workout-plans"></div>
+    </article>
+  </div>
+
+  <div id="recordModal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <article class="record-sheet" role="dialog" aria-modal="true" aria-labelledby="recordDate">
+      <button class="modal-close" type="button" data-close-modal aria-label="关闭记录">×</button>
+      <header class="record-header">
+        <div>
+          <p id="recordWeekday" class="eyebrow"></p>
+          <h2 id="recordDate"></h2>
+        </div>
+        <span id="recordMood" class="record-mood"></span>
+      </header>
+      <div id="recordBody" class="record-body"></div>
+      <footer class="record-footer">
+        <p>这是属于这一天的小小光亮</p>
+        <button id="editRecord" class="save-button" type="button">编辑这一天</button>
+      </footer>
+    </article>
+  </div>
+
+  <div id="clearModal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-clear></div>
+    <article class="confirm-sheet" role="alertdialog" aria-modal="true" aria-labelledby="clearTitle">
+      <h2 id="clearTitle">清空这一天？</h2>
+      <p id="clearDescription">将清除当天的生活、健康、媒体和日计划记录。生日备忘会单独保留。</p>
+      <div class="confirm-actions">
+        <button class="text-button" type="button" data-close-clear>取消</button>
+        <button id="confirmClearEntry" class="danger-button" type="button">确认清空</button>
+      </div>
+    </article>
+  </div>
+
+  <div id="weatherSettingsModal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-weather-settings></div>
+    <article class="weather-settings-sheet" role="dialog" aria-modal="true" aria-labelledby="weatherSettingsTitle">
+      <button class="modal-close" type="button" data-close-weather-settings aria-label="关闭城市设置">×</button>
+      <p class="eyebrow">LOCAL WEATHER</p>
+      <h2 id="weatherSettingsTitle">设置天气城市</h2>
+      <form id="weatherSettingsForm">
+        <label class="organizer-field">
+          <span>城市名称</span>
+          <input id="weatherCityInput" type="text" list="weatherCitySuggestions" placeholder="例如：上海、杭州、成都" autocomplete="off">
+          <datalist id="weatherCitySuggestions">
+            <option value="北京"><option value="上海"><option value="广州"><option value="深圳">
+            <option value="杭州"><option value="南京"><option value="成都"><option value="武汉">
+            <option value="重庆"><option value="西安"><option value="天津"><option value="苏州">
+            <option value="长沙"><option value="青岛"><option value="厦门"><option value="昆明">
+          </datalist>
+        </label>
+        <p id="weatherSettingsStatus" class="organizer-tip">输入中国城市名称，保存后会自动更新天气。</p>
+        <footer class="organizer-footer">
+          <button class="text-button" type="button" data-close-weather-settings>取消</button>
+          <button class="save-button" type="submit">保存城市</button>
+        </footer>
+      </form>
+    </article>
+  </div>
+
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <button class="lightbox-close" type="button" aria-label="关闭媒体预览">×</button>
+    <div id="lightboxContent" class="lightbox-content"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
