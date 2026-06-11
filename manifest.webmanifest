@@ -1,0 +1,28 @@
+{
+  "id": "/my-little-sunshine/",
+  "name": "我的小太阳",
+  "short_name": "小太阳",
+  "description": "记录生活、健康、计划与力量成长的个人日历",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f8f1e2",
+  "theme_color": "#f5bd45",
+  "categories": ["lifestyle", "health", "productivity"],
+  "icons": [
+    {
+      "src": "assets/app-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/app-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
